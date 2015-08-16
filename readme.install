@@ -1,0 +1,48 @@
+post_install() {
+ echo '--------------------------------------------------------------------------'
+ echo ' See the manpage for usage and setup: man modprobed_db'
+ echo '--------------------------------------------------------------------------'
+}
+
+post_remove() {
+ echo '-----------------------------------------------------------------------'
+ echo ' Remember to remove the entry in your crontab if you made one!'
+ echo '-----------------------------------------------------------------------'
+}
+
+# $1: The new package version
+# $2: The old package version
+
+post_upgrade() {
+NEW=`echo $1 | cut -f-1 -d '-'`
+OLD=`echo $2 | cut -f-1 -d '-'`
+
+if [ "$OLD" = "1.8" ]; then
+ echo '----------------------------------------------------------------------'
+ echo ' WARNING:'
+ echo
+ echo 'You MUST modify ANY and ALL calls to /usr/bin/modprobed_db to'
+ echo 'include the "store" switch.'
+ echo 'For example, in the root user crontab, /etc/rc.local.shutdown, etc.'
+ echo
+ echo 'In other words:         --> /usr/bin/modprobed_db store <--'
+ echo 
+ echo 'The default action in version 2.0 is to display the help file!'
+ echo 'Inaction on your part here will cause NO action to be taken by'
+ echo 'the software!'
+ echo
+ echo 'You have been warned!'
+ echo '----------------------------------------------------------------------'
+fi
+
+if [ "$OLD" = "1.3" ]; then
+ echo '----------------------------------------------------------------------'
+ echo ' WARNING:'
+ echo
+ echo 'With this upgrade you MUST replace your current version of'
+ echo '/etc/modprobed_db.conf with /etc/modprobed_db.conf.pacnew which'
+ echo '  contains a new array of modules to ignore!'
+ echo '----------------------------------------------------------------------'
+fi
+}
+
